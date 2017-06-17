@@ -1,0 +1,14 @@
+{%- from "panko/map.jinja" import server with context %}
+Listen {{ server.bind.host }}:{{ server.bind.port }}
+
+<VirtualHost *:{{ server.bind.port }}>
+    WSGIDaemonProcess panko-api processes={{ (grains.num_cpus/2+1)|int }} threads=1 user=panko display-name=%{GROUP}
+    WSGIProcessGroup panko-api
+    WSGIScriptAlias / /usr/bin/panko-api
+    WSGIApplicationGroup %{GLOBAL}
+    <IfVersion >= 2.4>
+        ErrorLogFormat "%{cu}t %M"
+    </IfVersion>
+    ErrorLog /var/log/apache2/panko_error.log
+    CustomLog /var/log/apache2/panko_access.log combined
+</VirtualHost>

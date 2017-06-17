@@ -1,0 +1,10 @@
+{%- load_yaml as base_defaults %}
+
+Debian:
+  pkgs:
+    - panko-api
+  cacert_file: '/etc/ssl/certs/ca-certificates.crt'
+
+{%- endload %}
+
+{%- set server = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('panko:server')) %}
