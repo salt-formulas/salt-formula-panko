@@ -25,7 +25,6 @@ provisioner:
     base:
       "*":
         - linux.system
-        - apache
         - panko
   pillars:
     top.sls:

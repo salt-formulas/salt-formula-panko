@@ -1,6 +1,9 @@
 {%- from "panko/map.jinja" import server with context %}
 {%- if server.get('enabled', False) %}
 
+include:
+- apache
+
 panko_server_packages:
   pkg.installed:
   - names: {{ server.pkgs }}
