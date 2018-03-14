@@ -28,8 +28,3 @@ parameters:
         region: RegionOne
         tenant: service
         endpoint_type: ${_param:keystone_panko_endpoint_type}
-      cache:
-        engine: memcached
-        members:
-        - host: ${_param:single_address}
-          port: 11211
