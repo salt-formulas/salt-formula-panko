@@ -41,9 +41,9 @@ verifier:
   sudo: true
 
 platforms:
-  - name: <%= ENV['PLATFORM'] || 'ubuntu-xenial' %>
+  - name: <%=ENV['PLATFORM'] ||  'saltstack-ubuntu-xenial-salt-stable' %>
     driver_config:
-      image: <%= ENV['PLATFORM'] || 'epcim/salt-formulas:saltstack-ubuntu-xenial-salt-2016.3' %>
+      image: <%=ENV['PLATFORM'] || 'epcim/salt:saltstack-ubuntu-xenial-salt-stable'%>
       platform: ubuntu
 
 suites:
