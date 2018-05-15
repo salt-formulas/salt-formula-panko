@@ -31,6 +31,13 @@ panko:
           port: 11211
         - host: 127.0.0.1
           port: 11211
+    logging:
+      log_appender: false
+      log_handlers:
+        watchedfile:
+          enabled: true
+        fluentd:
+          enabled: false
 apache:
   server:
     enabled: true
