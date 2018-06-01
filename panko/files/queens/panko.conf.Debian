@@ -1,0 +1,84 @@
+{%- from "panko/map.jinja" import server with context -%}
+[DEFAULT]
+
+#
+# From panko
+#
+
+# Configuration file for WSGI definition of API. (string value)
+#api_paste_config = api_paste.ini
+
+{%- if server.logging is defined %}
+{%- set _data = server.logging %}
+{%- include "oslo_templates/files/queens/oslo/_log.conf" %}
+{%- endif %}
+
+[api]
+
+#
+# From panko
+#
+
+# Default maximum number of items returned by API request. (integer value)
+# Minimum value: 1
+#default_api_return_limit = 100
+
+[cors]
+{%- if server.cors is defined %}
+{%- set _data = server.cors %}
+{%- include "oslo_templates/files/queens/oslo/_cors.conf" %}
+{%- endif %}
+
+[database]
+
+#
+# From panko
+#
+
+# Number of seconds that events are kept in the database for (<= 0 means
+# forever). (integer value)
+#event_time_to_live = -1
+
+# DEPRECATED: The connection string used to connect to the event database -
+# rather use ${database.connection} (string value)
+# This option is deprecated for removal.
+# Its value may be silently ignored in the future.
+#event_connection = <None>
+{%- set _data = server.database %}
+{%- if _data.ssl is defined and 'cacert_file' not in _data.get('ssl', {}).keys() %}{% do _data['ssl'].update({'cacert_file': server.cacert_file}) %}{% endif %}
+{%- include "oslo_templates/files/queens/oslo/_database.conf" %}
+
+[oslo_middleware]
+{%- set _data = server %}
+{%- include "oslo_templates/files/queens/oslo/_middleware.conf" %}
+
+[oslo_policy]
+{%- if server.policy is defined %}
+{%- set _data = server.policy %}
+{%- include "oslo_templates/files/queens/oslo/_policy.conf" %}
+{%- endif %}
+
+[keystone_authtoken]
+{%- set _data = server.identity %}
+{%- set auth_type = _data.get('auth_type', 'password') %}
+{%- include "oslo_templates/files/queens/keystonemiddleware/_auth_token.conf" %}
+{%- include "oslo_templates/files/queens/keystoneauth/_type_" + auth_type + ".conf" %}
+
+[storage]
+
+#
+# From panko
+#
+
+# Maximum number of connection retries during startup. Set to -1 to specify an
+# infinite retry count. (integer value)
+#max_retries = 10
+
+# Interval (in seconds) between retries of connection. (integer value)
+#retry_interval = 10
+
+# Enable HTTPS connection in the Elasticsearch connection (boolean value)
+#es_ssl_enabled = false
+
+# The name of the index in Elasticsearch (string value)
+#es_index_name = events
