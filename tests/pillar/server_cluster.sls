@@ -2,6 +2,7 @@ panko:
   server:
     enabled: true
     version: pike
+    event_time_to_live: 10
     bind:
       host: 127.0.0.1
       port: 8977
