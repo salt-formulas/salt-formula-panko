@@ -4,6 +4,11 @@ Debian:
   pkgs:
     - panko-api
   cacert_file: '/etc/ssl/certs/ca-certificates.crt'
+  logging:
+    log_appender: false
+    log_handlers:
+      watchedfile:
+        enabled: true
 
 {%- endload %}
 

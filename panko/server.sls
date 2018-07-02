@@ -15,6 +15,38 @@ panko_server_packages:
   - require:
     - pkg: panko_server_packages
 
+{% if server.logging.log_appender %}
+
+{%- if server.logging.log_handlers.get('fluentd', {}).get('enabled', False) %}
+panko_fluentd_logger_package:
+  pkg.installed:
+    - name: python-fluent-logger
+{%- endif %}
+
+/var/log/panko/panko.log:
+  file.managed:
+    - user: panko
+    - group: panko
+
+panko_general_logging_conf:
+  file.managed:
+    - name: /etc/panko/logging.conf
+    - source: salt://panko/files/logging.conf
+    - template: jinja
+    - user: panko
+    - group: panko
+    - defaults:
+        service_name: panko
+        values: {{ server }}
+    - require:
+      - pkg: panko_server_packages
+{%- if server.logging.log_handlers.get('fluentd', {}).get('enabled', False) %}
+      - pkg: panko_fluentd_logger_package
+{%- endif %}
+    - watch_in:
+      - service: panko_apache_restart
+{% endif %}
+
 panko_syncdb:
   cmd.run:
   - name: panko-dbsync
