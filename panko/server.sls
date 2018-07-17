@@ -47,6 +47,30 @@ panko_general_logging_conf:
       - service: panko_apache_restart
 {% endif %}
 
+{%- if server.get('role', 'secondary') == 'primary' %}
+{%- set cron = server.expirer.cron %}
+panko_expirer_cron:
+  cron.present:
+    {#- By default expirer will write logs to stderr, so redirecting them to syslog #}
+    - name: /usr/bin/panko-expirer {% if not server.logging.log_appender %}--use-syslog{% endif %}
+    - user: panko
+    - minute: '{{ cron.minute }}'
+    {%- if cron.hour is defined %}
+    - hour: '{{ cron.hour }}'
+    {%- endif %}
+    {%- if cron.daymonth is defined %}
+    - daymonth: '{{ cron.daymonth }}'
+    {%- endif %}
+    {%- if cron.month is defined %}
+    - month: '{{ cron.month }}'
+    {%- endif %}
+    {%- if cron.dayweek is defined %}
+    - dayweek: '{{ cron.dayweek }}'
+    {%- endif %}
+    - require:
+      - file: /etc/panko/panko.conf
+{%- endif %}
+
 panko_syncdb:
   cmd.run:
   - name: panko-dbsync
