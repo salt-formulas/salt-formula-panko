@@ -31,13 +31,13 @@ panko_fluentd_logger_package:
 panko_general_logging_conf:
   file.managed:
     - name: /etc/panko/logging.conf
-    - source: salt://panko/files/logging.conf
+    - source: salt://oslo_templates/files/logging/_logging.conf
     - template: jinja
     - user: panko
     - group: panko
     - defaults:
         service_name: panko
-        values: {{ server }}
+        _data: {{ server.logging }}
     - require:
       - pkg: panko_server_packages
 {%- if server.logging.log_handlers.get('fluentd', {}).get('enabled', False) %}
