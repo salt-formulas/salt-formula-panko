@@ -273,7 +273,7 @@ max_overflow = {{ server.database.get('max_overflow', 30) }}
 # forever). (integer value)
 #event_time_to_live = -1
 {%- if server.event_time_to_live is defined %}
-event_time_to_live = server.event_time_to_live
+event_time_to_live = {{ server.event_time_to_live }}
 {%- endif %}
 
 # DEPRECATED: The connection string used to connect to the event database -
