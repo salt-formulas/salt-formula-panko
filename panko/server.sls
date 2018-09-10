@@ -1,18 +1,23 @@
 {%- from "panko/map.jinja" import server with context %}
+
 {%- if server.get('enabled', False) %}
 
 include:
-- apache
+  - apache
+  - panko._ssl.mysql
 
 panko_server_packages:
   pkg.installed:
   - names: {{ server.pkgs }}
+  - require_in:
+    - sls: panko._ssl.mysql
 
 /etc/panko/panko.conf:
   file.managed:
   - source: salt://panko/files/{{ server.version }}/panko.conf.{{ grains.os_family }}
   - template: jinja
   - require:
+    - sls: panko._ssl.mysql
     - pkg: panko_server_packages
 
 {% if server.logging.log_appender %}
@@ -122,5 +127,7 @@ panko_apache_restart:
   - watch:
     - file: /etc/panko/panko.conf
     - apache_enable_panko_wsgi
+  - require:
+    - sls: panko._ssl.mysql
 
 {%- endif %}

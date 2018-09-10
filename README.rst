@@ -94,6 +94,28 @@ Also it is possible to configure this with pillar:
           fluentd:
             enabled: true
 
+Enable x509 and ssl communication between Panko and Galera cluster.
+---------------------
+By default communication between Panko and Galera is unsecure.
+
+panko:
+  server:
+    database:
+      x509:
+        enabled: True
+
+You able to set custom certificates in pillar:
+
+panko:
+  server:
+    database:
+      x509:
+        cacert: (certificate content)
+        cert: (certificate content)
+        key: (certificate content)
+
+You can read more about it here:
+    https://docs.openstack.org/security-guide/databases/database-access-control.html
 
 More information
 ================
