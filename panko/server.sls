@@ -16,6 +16,8 @@ panko_server_packages:
   file.managed:
   - source: salt://panko/files/{{ server.version }}/panko.conf.{{ grains.os_family }}
   - template: jinja
+  - mode: 0640
+  - group: panko
   - require:
     - sls: panko._ssl.mysql
     - pkg: panko_server_packages
