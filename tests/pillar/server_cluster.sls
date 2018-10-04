@@ -31,6 +31,10 @@ panko:
           port: 11211
         - host: 127.0.0.1
           port: 11211
+      security:
+        enabled: true
+        strategy: ENCRYPT
+        secret_key: secret
     logging:
       log_appender: false
       log_handlers:
