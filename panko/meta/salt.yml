@@ -1,0 +1,5 @@
+orchestration:
+  upgrade:
+    applications:
+      panko:
+        priority: 1900

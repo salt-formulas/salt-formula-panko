@@ -3,6 +3,7 @@
 Debian:
   pkgs:
     - panko-api
+  service_name: apache2
   cacert_file: '/etc/ssl/certs/ca-certificates.crt'
   expirer:
     cron:
@@ -16,4 +17,14 @@ Debian:
 
 {%- endload %}
 
+{%- load_yaml as client_defaults %}
+
+Debian:
+  enabled: false
+  pkgs:
+    - python-pankoclient
+{%- endload %}
+
 {%- set server = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('panko:server')) %}
+{%- set client = salt['grains.filter_by'](client_defaults, merge=salt['pillar.get']('panko:client')) %}
+{%- set upgrade = pillar.get('panko', {}).get('upgrade', {}) %}
