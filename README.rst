@@ -19,6 +19,7 @@ Single panko service
       server:
         enabled: true
         version: pike
+        enable_proxy_headers_parsing: True
         database:
           engine: mysql
           host: 10.20.0.101

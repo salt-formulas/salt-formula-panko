@@ -3,6 +3,7 @@ panko:
     enabled: true
     version: pike
     event_time_to_live: 10
+    enable_proxy_headers_parsing: True
     bind:
       host: 127.0.0.1
       port: 8977
